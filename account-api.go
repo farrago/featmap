@@ -29,11 +29,12 @@ func accountAPI(r chi.Router) {
 
 func getApp(w http.ResponseWriter, r *http.Request) {
 	type response struct {
-		Mode          string          `json:"mode"`
-		Account       *Account        `json:"account"`
-		Workspaces    []*Workspace    `json:"workspaces"`
-		Memberships   []*Member       `json:"memberships"`
-		Subscriptions []*Subscription `json:"subscriptions"`
+		Mode            string          `json:"mode"`
+		Account         *Account        `json:"account"`
+		Workspaces      []*Workspace    `json:"workspaces"`
+		Memberships     []*Member       `json:"memberships"`
+		Subscriptions   []*Subscription `json:"subscriptions"`
+		InvitesReceived []*Invite       `json:"invitesReceived"`
 	}
 
 	s := GetEnv(r).Service
@@ -43,11 +44,12 @@ func getApp(w http.ResponseWriter, r *http.Request) {
 	ss := s.GetSubscriptionsByAccount()
 	log.Println(len(ss))
 	render.JSON(w, r, response{
-		Mode:          s.GetConfig().Mode,
-		Account:       s.GetAccountObject(),
-		Workspaces:    s.GetWorkspaces(),
-		Memberships:   s.GetMembersByAccount(),
-		Subscriptions: s.GetSubscriptionsByAccount(),
+		Mode:            s.GetConfig().Mode,
+		Account:         s.GetAccountObject(),
+		Workspaces:      s.GetWorkspaces(),
+		Memberships:     s.GetMembersByAccount(),
+		Subscriptions:   s.GetSubscriptionsByAccount(),
+		InvitesReceived: s.GetInvitesReceived(),
 	})
 }
 

@@ -41,10 +41,10 @@ class WorkspacesPage extends Component<Props, State> {
 
         return (
             <div>
-                <Header account={application.account!}/>
+                <Header account={application.account!} />
 
                 {this.state.showCreate ?
-                    <CreateWorkspaceModal close={() => this.setState({ showCreate: false })}/>
+                    <CreateWorkspaceModal close={() => this.setState({ showCreate: false })} />
                     : null
                 }
 
@@ -69,17 +69,47 @@ class WorkspacesPage extends Component<Props, State> {
                                     <div >
                                         {
                                             application.workspaces.map(x =>
-                                                (<div className="  p-2" key={x.id}>
-                                                    <div className="mb-1">
-                                                        <p><b><Link className="" to={"/" + x.name}>{x.name} </Link></b></p>
-                                                        <p className="text-xs">Created <TimeAgo date={x.createdAt} />.  </p>
-                                                    </div>
-                                                </div>)
+                                            (<div className="  p-2" key={x.id}>
+                                                <div className="mb-1">
+                                                    <p><b><Link className="" to={"/" + x.name}>{x.name} </Link></b></p>
+                                                    <p className="text-xs">Created <TimeAgo date={x.createdAt} />.  </p>
+                                                </div>
+                                            </div>)
                                             )
                                         }
                                     </div>
                                 </div>
                                 : "No workspaces"
+                            }
+                        </div>
+                    </CardLayout>
+                    <CardLayout>
+
+                        <div className="">
+                            {(application.invitesReceived && application.invitesReceived.length > 0) ?
+
+                                <div className="flex flex-col max-w-lg  " >
+                                    <div className="p-2  ">
+                                        {application.invitesReceived.length} pending invite(s) to join other workspaces
+                                    </div>
+
+                                    <div >
+                                        {
+                                            application.invitesReceived.map(x =>
+                                            (<div className="  p-2" key={x.id}>
+                                                <div className="mb-1">
+                                                    <p>
+                                                        {x.createdByName} invited you to join
+                                                        workspace <b><Link className="" to={"/account/invitation/" + x.code}>{x.workspaceName}</Link></b>
+                                                    </p>
+                                                    <p className="text-xs">Created <TimeAgo date={x.createdAt} />.  </p>
+                                                </div>
+                                            </div>)
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                                : "No pending invites to other workspaces"
                             }
                         </div>
                     </CardLayout>
@@ -89,4 +119,4 @@ class WorkspacesPage extends Component<Props, State> {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WorkspacesPage); 
+export default connect(mapStateToProps, mapDispatchToProps)(WorkspacesPage);
