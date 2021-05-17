@@ -46,6 +46,7 @@ type Repository interface {
 	GetInviteByEmail(wsid string, email string) (*Invite, error)
 	GetInvite(workspaceID string, id string) (*Invite, error)
 	FindInvitesByWorkspace(wsid string) ([]*Invite, error)
+	FindInvitesByEmail(email string) ([]*Invite, error)
 
 	GetProjectByExternalLink(link string) (*Project, error)
 	GetProject(workspaceID string, projectID string) (*Project, error)
@@ -359,6 +360,15 @@ func (a *repo) GetInvite(workspaceID string, id string) (*Invite, error) {
 func (a *repo) FindInvitesByWorkspace(wsid string) ([]*Invite, error) {
 	x := []*Invite{}
 	if err := a.tx.Select(&x, "SELECT * FROM invites WHERE workspace_id = $1", wsid); err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return x, nil
+}
+
+func (a *repo) FindInvitesByEmail(email string) ([]*Invite, error) {
+	x := []*Invite{}
+	if err := a.tx.Select(&x, "SELECT * FROM invites WHERE email = $1", email); err != nil {
 		log.Println(err)
 		return nil, err
 	}

@@ -1,4 +1,4 @@
-import { IWorkspace, IMembership, IAccount, IMessage, ISubscription } from '../store/application/types'
+import { IWorkspace, IMembership, IAccount, IMessage, ISubscription, IInvite } from '../store/application/types'
 import { IProject } from '../store/projects/types'
 import { IMilestone } from '../store/milestones/types';
 import { IWorkflow } from '../store/workflows/types';
@@ -206,6 +206,7 @@ export interface API_FETCH_APP_RESP {
     account: IAccount
     messages: IMessage[]
     subscriptions: ISubscription[]
+    invitesReceived: IInvite[]
 }
 
 export const API_FETCH_APP = async () => {
@@ -348,6 +349,16 @@ export const API_RESEND_INVITE = async (workspaceId: string, id: string) => {
         method: 'POST',
         headers: {
             "Workspace": workspaceId,
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include'
+    });
+}
+
+export const API_GET_INVITES_RECEIVED = async () => {
+    return await fetch(endpoint + "/invites/received", {
+        method: 'GET',
+        headers: {
             'Content-Type': 'application/json',
         },
         credentials: 'include'

@@ -83,6 +83,7 @@ type Service interface {
 	ChangeGeneralInfo(EUVAT string, externalBillingEmail string) error
 
 	GetInvitesByWorkspace() []*Invite
+	GetInvitesReceived() []*Invite
 	CreateInvite(email string, level string) (*Invite, error)
 	SendInvitationMail(invitationID string) error
 	DeleteInvite(invitationID string) error
@@ -777,6 +778,16 @@ func (s *service) DeleteWorkspace() error {
 
 func (s *service) GetInvitesByWorkspace() []*Invite {
 	invites, err := s.r.FindInvitesByWorkspace(s.Member.WorkspaceID)
+	if err != nil {
+		log.Println(err)
+		return nil
+	}
+	return invites
+}
+
+func (s *service) GetInvitesReceived() []*Invite {
+	invites, err := s.r.FindInvitesByEmail(s.Acc.Email)
+
 	if err != nil {
 		log.Println(err)
 		return nil

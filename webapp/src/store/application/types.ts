@@ -8,6 +8,7 @@ export interface IApplication {
     account?: IAccount
     messages: IMessage[]
     subscriptions: ISubscription[]
+    invitesReceived: IInvite[]
 }
 
 export interface IMembership {
